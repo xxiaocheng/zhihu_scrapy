@@ -30,7 +30,8 @@ class PeopleSpider(scrapy.Spider):
             next=jsonresponse.get('paging',None).get('next',None)
         except:
             next=None
-            
+
+
         data=jsonresponse.get('data',None)
         if len(data)!=0:
             if next:
@@ -39,6 +40,7 @@ class PeopleSpider(scrapy.Spider):
                 if dt["url_token"] not in self.scrapied:
                     self.scrapied.add(dt["url_token"])
                     yield scrapy.Request(url=self.profile_url.format(dt["url_token"]),callback=self.parse_item)
+                    yield scrapy.Request(url=self.following_url.format(dt["url_token"]),callback=self.parse_url_token)
                     
         
 

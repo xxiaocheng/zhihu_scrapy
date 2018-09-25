@@ -53,3 +53,4 @@ class DuplicatesPipeline(object):
         else:
             self.ids_seen.add(item['url_token'])
             return item
+
