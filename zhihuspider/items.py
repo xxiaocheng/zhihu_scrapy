@@ -11,9 +11,9 @@ import scrapy
 class ZhihuspiderItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    people_token=scrapy.Field()             #用户唯一识别id
+    url_token=scrapy.Field()             #用户唯一识别id
     name=scrapy.Field()                     #姓名
-    head_line=scrapy.Field()                #一句话描述
+    headline=scrapy.Field()                #一句话描述
     avatar_url=scrapy.Field()               #头像url
     answer_count=scrapy.Field()             #回答数 
     articles_count=scrapy.Field()           #文章数

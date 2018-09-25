@@ -14,6 +14,9 @@ BOT_NAME = 'zhihuspider'
 SPIDER_MODULES = ['zhihuspider.spiders']
 NEWSPIDER_MODULE = 'zhihuspider.spiders'
 
+MONGO_URI='127.0.0.1'
+MONGO_DATABASE='zhihu'
+
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36'
@@ -64,9 +67,11 @@ ROBOTSTXT_OBEY = False
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'zhihuspider.pipelines.ZhihuspiderPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'zhihuspider.pipelines.ZhihuspiderPipeline': None,
+   'zhihuspider.pipelines.MongoPipeline':100,
+   'zhihuspider.pipelines.DuplicatesPipeline':50,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
