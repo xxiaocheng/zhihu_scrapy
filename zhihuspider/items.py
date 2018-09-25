@@ -20,7 +20,7 @@ class ZhihuspiderItem(scrapy.Item):
     follower_count=scrapy.Field()           #粉丝数量
     is_org=scrapy.Field()                   #是否是机构账号
     following_count=scrapy.Field()          #关注数目
-    gender=scrapy.Field()                   #性别  1男 0女
+    gender=scrapy.Field()                   #性别  1男 -1女
     educations=scrapy.Field()               #教育经历     [school ,major]
     employments=scrapy.Field()              #工作经历     [job ,company]
     voteup_count=scrapy.Field()             #被赞同数
