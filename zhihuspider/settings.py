@@ -55,9 +55,14 @@ ROBOTSTXT_OBEY = False
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'zhihuspider.middlewares.ZhihuspiderDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   'zhihuspider.middlewares.ZhihuspiderDownloaderMiddleware': None,
+   'zhihuspider.middlewares.RandomUserAgentMiddleware':400,
+   'scrapy.downloadermiddlewares.retry.RetryMiddleware': 90,
+   'scrapy_proxies.RandomProxy': 100,
+   'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 110,
+}
+
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
@@ -93,3 +98,30 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+
+#Proxy Setting
+# Retry many times since proxies often fail
+RETRY_TIMES = 10
+# Retry on most error codes since proxies fail for different reasons
+RETRY_HTTP_CODES = [500, 503, 504, 400, 403, 404, 408,301,429,401]
+
+
+
+# Proxy list containing entries like
+# http://host1:port
+# http://H9927T06AA86RX9D:D9AF83442506927D@http-dyn.abuyun.com:9020
+# http://host3:port
+# ...
+# PROXY_LIST = '/home/xiao/Learning/python/scrapy/zhihuspider/zhihu_scrapy/zhihuspider/proxylist.txt'
+
+# Proxy mode
+# 0 = Every requests have different proxy
+# 1 = Take only one proxy from the list and assign it to every requests
+# 2 = Put a custom proxy to use in the settings
+PROXY_MODE = 2
+
+# If proxy mode is 2 uncomment this sentence :
+CUSTOM_PROXY = "http://H9927T06AA86RX9D:D9AF83442506927D@http-dyn.abuyun.com:9020"
+
+RANDOM_UA_PER_PROXY=True

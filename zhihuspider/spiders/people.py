@@ -43,8 +43,6 @@ class PeopleSpider(scrapy.Spider):
                     yield scrapy.Request(url=self.following_url.format(dt["url_token"]),callback=self.parse_url_token)
                     
         
-
-
     def parse_item(self, response):
         jsonresponse = json.loads(response.body_as_unicode())
         item = ZhihuspiderItem() 
