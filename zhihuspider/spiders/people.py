@@ -8,7 +8,7 @@ from scrapy_redis.spiders import RedisSpider
 class PeopleSpider(RedisSpider):
     name = 'people'
 
-    following_url='http://www.zhihu.com/api/v4/members/{}/followees?limit=10&offset=0'
+    following_url='https://www.zhihu.com/api/v4/members/{}/followees?limit=20&offset=0'
     profile_url='https://www.zhihu.com/api/v4/members/{}?include=allow_message%2Cis_o'\
                 'rg%2Cemployments%2Canswer_count%2Cbusiness%2Cfollowing_question_count%'\
                 '2Cfavorited_count%2Cfollowing_columns_count%2Cquestion_count%2C'\
@@ -36,17 +36,25 @@ class PeopleSpider(RedisSpider):
             next=jsonresponse.get('paging',None).get('next',None)
         except:
             next=None
-
-
-        data=jsonresponse.get('data',None)
-        if len(data)!=0:
+        datas=jsonresponse.get('data',None)
+        if datas:
+            for data in datas:
+                url_token=data['url_token']
+                yield scrapy.Request(url=self.following_url.format(url_token),callback=self.parse)
+                yield scrapy.Request(url=self.profile_url.format(url_token),callback=self.parse_item)
             if next:
                 yield scrapy.Request(url=next,callback=self.parse)
-            for dt in data:
-                if dt["url_token"] not in self.scrapied:
-                    self.scrapied.add(dt["url_token"])
-                    yield scrapy.Request(url=self.following_url.format(dt["url_token"]),callback=self.parse),scrapy.Request(url=self.profile_url.format(dt["url_token"]),callback=self.parse_item)
-                    yield scrapy.Request(url=self.profile_url.format(dt["url_token"]),callback=self.parse_item)
+
+
+
+        # if len(data)!=0:
+        #     if next:
+        #         yield scrapy.Request(url=next,callback=self.parse)
+        #     for dt in data:
+        #         if dt["url_token"] not in self.scrapied:
+        #             self.scrapied.add(dt["url_token"])
+        #             yield scrapy.Request(url=self.following_url.format(dt["url_token"]),callback=self.parse)
+        #             yield scrapy.Request(url=self.profile_url.format(dt["url_token"]),callback=self.parse_item)
                     
         
     def parse_item(self, response):

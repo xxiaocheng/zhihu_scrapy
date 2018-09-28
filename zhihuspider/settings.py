@@ -156,7 +156,7 @@ SCHEDULER_PERSIST = True
 #SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.PriorityQueue'
 
 # Alternative queues.
-#SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.FifoQueue'
+SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.FifoQueue'
 #SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.LifoQueue'
 
 # Max idle time to prevent the spider from being closed when distributed crawling.
