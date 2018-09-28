@@ -3,9 +3,9 @@ import scrapy
 import json
 from scrapy.shell import inspect_response
 from zhihuspider.items import ZhihuspiderItem
+from scrapy_redis.spiders import RedisSpider
 
-
-class PeopleSpider(scrapy.Spider):
+class PeopleSpider(RedisSpider):
     name = 'people'
 
     following_url='http://www.zhihu.com/api/v4/members/{}/followees?limit=10&offset=0'
@@ -18,12 +18,18 @@ class PeopleSpider(scrapy.Spider):
 
     scrapied=set()
 
-    def start_requests(self):
-        start_url_token='excited-vczh'
-        
-        yield scrapy.Request(url=self.following_url.format(start_url_token),callback=self.parse_url_token)
+    redis_key='people:start_urls'
     
-    def parse_url_token(self,response):
+    # start_urls=[
+    #     following_url.format("excited-vczh"),
+    # ]
+    # def start_requests(self):
+    #     start_url_token=[]
+
+    #     for token in start_url_token:        
+    #         yield scrapy.Request(url=self.following_url.format(token),callback=self.parse)
+    
+    def parse(self,response):
         jsonresponse = json.loads(response.body_as_unicode())
         
         try:
@@ -35,12 +41,12 @@ class PeopleSpider(scrapy.Spider):
         data=jsonresponse.get('data',None)
         if len(data)!=0:
             if next:
-                yield scrapy.Request(url=next,callback=self.parse_url_token)
+                yield scrapy.Request(url=next,callback=self.parse)
             for dt in data:
                 if dt["url_token"] not in self.scrapied:
                     self.scrapied.add(dt["url_token"])
+                    yield scrapy.Request(url=self.following_url.format(dt["url_token"]),callback=self.parse),scrapy.Request(url=self.profile_url.format(dt["url_token"]),callback=self.parse_item)
                     yield scrapy.Request(url=self.profile_url.format(dt["url_token"]),callback=self.parse_item)
-                    yield scrapy.Request(url=self.following_url.format(dt["url_token"]),callback=self.parse_url_token)
                     
         
     def parse_item(self, response):
