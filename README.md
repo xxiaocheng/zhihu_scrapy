@@ -21,10 +21,13 @@
 
 + 确认Redis 和MongoDB可以被其他主机访问到
 + 执行爬虫 
-    scrapy crawl people 
+```
+scrapy crawl people 
+```
 + 第一个客户端执行需向Redis插入urls
-
-    redis-cli lpush people:start_urls https://www.zhihu.com/api/v4/members/{url_token}/followees?limit=20&offset=0
+```
+ redis-cli lpush people:start_urls https://www.zhihu.com/api/v4/members/{url_token}/followees?limit=20&offset=0
+ ```
 
 + 更多scrapy-redis 设置[参考](https://scrapy-redis.readthedocs.io/en/stable/)
 
