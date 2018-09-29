@@ -28,7 +28,5 @@
 
 + 更多scrapy-redis 设置[参考](https://scrapy-redis.readthedocs.io/en/stable/)
 
-
-
-
-
+## 帮助
++ 联系cxxlxx0@gmail.com
